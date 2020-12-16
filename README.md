@@ -1,9 +1,9 @@
 <img src="https://bit.ly/2VnXWr2" alt="Ironhack Logo" width="100"/>
 
-# Title of My Project
-*[Your Name]*
+# Smart Bank
+*Víctor Lópesz Jiménez*
 
-*[Your Cohort, Campus & Date]*
+*DAFT October 2020, Barcelona, 16/12/2020*
 
 ## Content
 - [Project Description](#project-description)
@@ -19,54 +19,71 @@
 - [Links](#links)
 
 ## Project Description
-Write a short description of your project: 3-5 sentences about what your project is about, why you chose this topic (if relevant), and what you are trying to show.
+My project is a Machine Learning model able to predict if a customer from a bank is going to churn or not. The reason why I choose that topic is
+because, on my previous job, **churn** was a very important metric to control, so I wanted to deep dive on that.
+Last, what I'm trying to show is finding the best model for categorizing correctly the churned customers.
 
 ## Hypotheses / Questions
-* What data/business/research/personal question you would like to answer?
-* What is the context for the question and the possible scientific or business application?
-* What are the hypotheses you would like to test in order to answer your question?  
-Frame your hypothesis with statistical/data languages (i.e. define Null and Alternative Hypothesis). You can use formulas if you want but that is not required.
+* Does the attrition is more likely to happen based on one gender or other?
+* Is it more likely that the newest customers are more able to churn?
+* Low card utilization ratio is an indicator of possible churn?
+
+Mention that, the project was based on ML and those hypothesis are not answered yet. It would be done on the future work.
 
 ## Dataset
-* Where did you get your data? If you downloaded a dataset (either public or private), describe where you downloaded it and include the command to load the dataset.
-* Did you build your own datset? If so, did you use an API or a web scraper? PRovide the relevant scripts in your repo.
-* For all types of datasets, provide a description of the size, complexity, and data types included in your dataset, as well as a schema of the tables if necessary.
-* If the question cannot be answered with the available data, why not? What data would you need to answer it better?
+The data was downloaded from Kaggle (https://www.kaggle.com/sakshigoyal7/credit-card-customers).
+The dataset has +10K rows and 21 columns (the last two should be removed at the beggining), being 6 of them categorical and the rest numerical.
 
 ## Cleaning
-Describe your full process of data wrangling and cleaning. Document why you chose to fill missing values, extract outliers, or create the variables you did as well as your reasoning behind the process.
+The data was pretty clean, as RegEx wasn't neccesary and there were no missing values. Looking the outliers, I removed them using the IQR and store the new dataframe into a different .csv file to compare it with the original one and see if it improved.
+Last, I checked if there was colinearity in some columns, having to drop two of them; and converted the categorical ones to numerical using `OrdinalEnconding` and `OneHotEncoding`.
 
 ## Analysis
-* Overview the general steps you went through to analyze your data in order to test your hypothesis.
-* Document each step of your data exploration and analysis.
-* Include charts to demonstrate the effect of your work.
-* If you used Machine Learning in your final project, describe your feature selection process.
+*Hypothesis part to be answered once it's added*
+
+The methods used in Machine Learning were the **classifiers**. What I first did was initializing several models and loop over them to see which were the top 3 best performers, which resulted to be `GradientBoost`, `AdaBoost` and `RandomForest`. After that, I started tuning the different models and see which was the best for them. Once I got it, `GradientBoost`, I did more tests like increasing/reducing the `test_size`, over and under sampling.
+
+Also, deep learning was present on the project with the aim of training neuronal networks and see their results.
 
 ## Model Training and Evaluation
-*Include this section only if you chose to include ML in your project.*
-* Describe how you trained your model, the results you obtained, and how you evaluated those results.
+After the best three models were found, I trained them using `RandomizedSearchCV` for having a general idea of best parameters and, after that, I did a deep tuning with `GridSearchCV`, setting the `cv` with `StratifiedKFold`.
+
+The best model was **`GradientBoost`**, and here are the results:
+![gradientboost_results](./images.gradient_boost_results.png)
+
+You can see an `accuracy` grater than 97.5%, and although data was imbalanced, the `recall` for the Churned customers is greater than 92%, meaning that the model classifies correctly almost every customer on their bucket. Also, looking into the `cohen_kappa_score` provided very good results.
 
 ## Conclusion
-* Summarize your results. What do they mean?
-* What can you say about your hypotheses?
-* Interpret your findings in terms of the questions you try to answer.
+Summarizing, the churned customers are detected almost perfectly, although the model might be improved little by little if I had more time for fine tuning.
+
+*More content to be added on the future once the hypothesis testing is done and I can answer the initial questions*
 
 ## Future Work
-Address any questions you were unable to answer, or any next steps or future extensions to your project.
+1. Hypothesis testing.
+2. Improved deep learning model.
+3. Improved the model to reduce miss classifications.
 
 ## Workflow
-Outline the workflow you used in your project. What were the steps?
-How did you test the accuracy of your analysis and/or machine learning algorithm?
+The workflow for the project was the following one:
+1. Data cleaning and pre-processing.
+2. Find the best classifier models.
+3. Tune the top 3 models and identify which is the best.
+4. Do further testing with the best model and see if the numbers improve.
+5. Build a neuronal network.
+
+For testing the results, as they were imbalanced I always used the `stratify`. Also, instead of focusing on `accuracy`, I was looking more into the `recall` of each label, but without leaving the `precision` being a bad metric; or in other words, the best `recall` possible with the highest `f1-score` possible.
 
 ## Organization
-How did you organize your work? Did you use any tools like a trello or kanban board?
+The workflow was organized through a Trello Board linked on the below section.
 
-What does your repository look like? Explain your folder and file structure.
+The repository has three different folders:
+1. **images**: Images from plots.
+2. **data**: Where you can find the different *.csv* files used (or generated) during the project.
+3. **code**: Where you can find three different notebooks: *Data Cleaning and Pre-Processing*, where the data is cleaned and pre-processed for the ML; *ML Modeling*, where different models are being tested to find the best one; and *Deep Learning*, where an ANN is created.
 
 ## Links
-Include links to your repository, slides and trello/kanban board. Feel free to include any other links associated with your project.
+Include links to repository, slides and trello board.
 
-
-[Repository](https://github.com/)  
+[Repository](https://github.com/VictorLJay/Project-Week-8-Final-Project)  
 [Slides](https://slides.com/)  
-[Trello](https://trello.com/en)  
+[Trello](https://trello.com/b/fhImXMkI/final-project-ironhack)  
